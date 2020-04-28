@@ -16,4 +16,10 @@ public interface OrderService {
      * @return
      */
     public void save(Order order);
+
+    /**
+     * 创建订单
+     * @param order
+     */
+    void createOrder(Order order);
 }

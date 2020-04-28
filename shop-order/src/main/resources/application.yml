@@ -21,11 +21,21 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.35.187:8848
+
     sentinel:
       transport:
         port: 9999 #跟控制台交流的端口,随意指定一个未使用的端口即可
         dashboard: localhost:8080 # 指定控制台服务的地址
 
+#Ribbon负载均衡配置
 service-product: # 调用的提供者的名称
   ribbon:
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+
+# 开启feign对sentinel的支持
+feign:
+  sentinel:
+    enabled: true

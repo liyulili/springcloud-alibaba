@@ -7,6 +7,7 @@ import cn.liyu.sevice.OrderService;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Random;
 
@@ -32,6 +34,7 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private DiscoveryClient discoveryClient;
+
     @Autowired
     private ProductService productService;
 
@@ -148,11 +151,12 @@ public class OrderController {
 
     /**
      * 使用feign调用
+     *
      * @param pid
      * @return
      */
-    @GetMapping("/order/prod/{pid}")
-    public Order order(@PathVariable("pid") Integer pid) {
+//    @GetMapping("/order/prod/{pid}")
+    public Order orderFeign(@PathVariable("pid") Integer pid) {
         log.info(">>客户下单,这时候要调用商品微服务查询商品信息");
         //通过fegin调用商品微服务
         Product product = productService.findByPid(pid);
@@ -165,6 +169,42 @@ public class OrderController {
         order.setPprice(product.getPprice());
         order.setNumber(1);
         orderService.save(order);
+        return order;
+    }
+
+    /**
+     * feign整合sentinel
+     *
+     * @param pid
+     * @return
+     */
+    @GetMapping("/order/prod/{pid}")
+    public Order orderFeignSentinel(@PathVariable("pid") Integer pid) {
+        log.info(">>客户下单,这时候要调用商品微服务查询商品信息");
+        //通过fegin调用商品微服务
+        Product product = productService.findByPid(pid);
+        log.info(">>商品信息,查询结果:" + JSON.toJSONString(product));
+        if (product.getPid() == -1) {
+            Order order = new Order();
+            order.setPname("下单失败");
+            return order;
+        }
+        log.info("查询到{}号商品的信息,内容是:{}", pid, JSON.toJSONString(product));
+
+        Order order = new Order();
+        order.setUid(1);
+        order.setUsername("测试用户");
+        order.setPid(product.getPid());
+        order.setPname(product.getPname());
+        order.setPprice(product.getPprice());
+        order.setNumber(1);
+        orderService.createOrder(order);
+        log.info("创建订单成功,订单信息为{}", JSON.toJSONString(order));
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return order;
     }
 }
