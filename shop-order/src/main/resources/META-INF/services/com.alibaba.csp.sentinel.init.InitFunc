@@ -1,0 +1,2 @@
+#配置sentinel持久化规则配置类路径
+cn.liyu.config.FilePersistence
