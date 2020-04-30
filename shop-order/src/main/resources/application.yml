@@ -27,6 +27,13 @@ spring:
         port: 9999 #跟控制台交流的端口,随意指定一个未使用的端口即可
         dashboard: localhost:8080 # 指定控制台服务的地址
 
+  zipkin:
+    base-url: http://192.168.35.187:9411/ #zipkin server的请求地址
+    discovery-client-enabled: false #让nacos把它当成一个URL， 而不要当做服务名
+  sleuth:
+    sampler:
+      probability: 1.0 #采样的百分比
+
 #Ribbon负载均衡配置
 service-product: # 调用的提供者的名称
   ribbon:
@@ -39,3 +46,9 @@ ribbon:
 feign:
   sentinel:
     enabled: true
+
+#rocketmq
+rocketmq:
+  name-server: 192.168.35.187:9876   #rocketMQ服务的地址
+  producer:
+    group: shop-order # 生产者组
