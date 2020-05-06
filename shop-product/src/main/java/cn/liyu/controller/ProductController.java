@@ -5,9 +5,8 @@ import cn.liyu.sevice.ProductService;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author liyu
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j(topic = "ProductController")
 public class ProductController {
 
+    @Value("${spring.datasource.url}")
+    String url;
     @Autowired
     private ProductService productService;
 
@@ -27,4 +28,21 @@ public class ProductController {
         log.info("查询到商品:" + JSON.toJSONString(product));
         return product;
     }
+
+    @GetMapping("/url")
+    public String url() {
+        return url;
+    }
+
+    /**
+     * 减少库存
+     *
+     * @param pid
+     * @param num
+     */
+    @PostMapping("/product/reduceInventory")
+    public void reduceInventory(Integer pid, int num) throws Exception {
+        productService.reduceInventory(pid, num);
+    }
+
 }

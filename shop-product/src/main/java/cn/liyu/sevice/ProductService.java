@@ -15,4 +15,11 @@ public interface ProductService {
      * @return
      */
     public Product findByPid(Integer pid);
+
+    /**
+     * 减少库存
+     * @param pid
+     * @param num
+     */
+    public void reduceInventory(Integer pid, int num) throws Exception;
 }

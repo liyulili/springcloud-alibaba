@@ -5,8 +5,7 @@ import cn.liyu.client.fallback.ProductServiceFallBackFactory;
 import cn.liyu.po.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author liyu
@@ -19,8 +18,18 @@ import org.springframework.web.bind.annotation.PathVariable;
         fallbackFactory = ProductServiceFallBackFactory.class//fallback和fallbackFactory只能使用其中一种方式
 )
 public interface ProductService {
-    //指定调用提供者的哪个方法
-    //@FeignClient+@GetMapping 就是一个完整的请求路径 http://serviceproduct/product/{pid}
-    @GetMapping(value = "/product/{pid}")
-    Product findByPid(@PathVariable("pid") Integer pid);
+
+    @RequestMapping("/product/{pid}")
+    Product findByPid(@RequestParam("pid")Integer pid);
+
+    /**
+     * 减少库存
+     *
+     * @param pid
+     * @param num
+     */
+    @PostMapping("/product/reduceInventory")
+    void reduceInventory(@RequestParam("pid") Integer pid,
+                         @RequestParam("num") Integer num);
+
 }

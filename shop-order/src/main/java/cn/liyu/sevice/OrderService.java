@@ -18,8 +18,15 @@ public interface OrderService {
     public void save(Order order);
 
     /**
-     * 创建订单
+     * 创建订单（feign测试）
      * @param order
      */
-    void createOrder(Order order);
+    void createOrder1(Order order);
+
+    /**
+     * 创建订单（seata测试）
+     * @param pid
+     * @return
+     */
+     Order createOrder(Integer pid) throws Exception;
 }
