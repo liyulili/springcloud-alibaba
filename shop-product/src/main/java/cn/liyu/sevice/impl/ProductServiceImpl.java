@@ -29,8 +29,8 @@ public class ProductServiceImpl implements ProductService {
         Product product = productDao.findById(pid).get();
         if (product.getStock() >= num) {
             product.setStock(product.getStock() - num);//减库存
-            int i = 1 / 0;
             productDao.save(product);
+            int i=1/0;
         } else {
             throw new Exception("库存不足");
         }

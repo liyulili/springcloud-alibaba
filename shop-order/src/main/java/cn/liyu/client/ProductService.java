@@ -1,11 +1,11 @@
 package cn.liyu.client;
 
-import cn.liyu.client.fallback.ProductServiceFallBack;
-import cn.liyu.client.fallback.ProductServiceFallBackFactory;
 import cn.liyu.po.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author liyu
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
  * @description ProductService的feign客户端
  */
 @Component
-@FeignClient(value = "service-product",//声明调用的提供者的name
+@FeignClient(value = "service-product"//声明调用的提供者的name
 //        fallback = ProductServiceFallBack.class,//fallback用于指定容错类
-        fallbackFactory = ProductServiceFallBackFactory.class//fallback和fallbackFactory只能使用其中一种方式
+//        fallbackFactory = ProductServiceFallBackFactory.class//fallback和fallbackFactory只能使用其中一种方式
 )
 public interface ProductService {
 
@@ -30,6 +30,6 @@ public interface ProductService {
      */
     @PostMapping("/product/reduceInventory")
     void reduceInventory(@RequestParam("pid") Integer pid,
-                         @RequestParam("num") Integer num);
+                         @RequestParam("num") Integer num) throws Exception;
 
 }

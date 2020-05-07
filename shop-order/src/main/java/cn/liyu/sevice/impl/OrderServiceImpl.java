@@ -11,6 +11,7 @@ import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
@@ -41,7 +42,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    @GlobalTransactional
+    @GlobalTransactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Order createOrder(Integer pid) throws Exception {
         //1.调用商品微服务查询商品信息
@@ -61,6 +63,9 @@ public class OrderServiceImpl implements OrderService {
 
         //3 扣库存
         productService.reduceInventory(pid, order.getNumber());
+
+//        int i = 1 / 0;
+
         return order;
     }
 }

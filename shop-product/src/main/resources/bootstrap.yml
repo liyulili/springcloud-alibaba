@@ -6,10 +6,10 @@ spring:
       config:
         server-addr: 192.168.35.187:8848
         file-extension: yaml # 配置文件格式
-        shared-dataids: all-service.yaml #需要引入的配置
-        refreshable-dataids: all-service.yaml #配置要实现动态配置刷新的配置
+#        shared-dataids: all-service.yaml #需要引入的配置
+#        refreshable-dataids: all-service.yaml #配置要实现动态配置刷新的配置
 #        namespace: public
-#        group: SEATA_GROUP
+        group: SEATA_GROUP
     alibaba:
       seata:
         tx-service-group: ${spring.application.name}

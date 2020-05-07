@@ -32,34 +32,34 @@ public class OrderControllerNacosConfig {
     @Autowired
     private ConfigurableApplicationContext applicationContext;
 
-    /**
-     * 编码方式获取nacos中配置
-     *
-     * @return
-     */
-    @GetMapping("/nacos-config-test1")
-    public String nacosConfingTest1() {
-        return applicationContext.getEnvironment().getProperty("config.appName");
-    }
+//    /**
+//     * 编码方式获取nacos中配置
+//     *
+//     * @return
+//     */
+//    @GetMapping("/nacos-config-test1")
+//    public String nacosConfingTest1() {
+//        return applicationContext.getEnvironment().getProperty("config.appName");
+//    }
+//
+//    @Value("${config.appName}")
+//    private String appName;
 
-    @Value("${config.appName}")
-    private String appName;
+//    //2 注解方式
+//    @GetMapping("/nacos-config-test2")
+//    public String nacosConfingTest2() {
+//        return appName;
+//    }
 
-    //2 注解方式
-    @GetMapping("/nacos-config-test2")
-    public String nacosConfingTest2() {
-        return appName;
-    }
-
-    @Value("${config.env}")
-    private String env;
+//    @Value("${config.env}")
+//    private String env;
 
     /** 同一微服务的不同环境下共享配置
      *
      * @return
      */
-    @GetMapping("/nacos-config-test3")
-    public String nacosConfingTest3() {
-        return env;
-    }
+//    @GetMapping("/nacos-config-test3")
+//    public String nacosConfingTest3() {
+//        return env;
+//    }
 }
